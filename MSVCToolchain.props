@@ -1,0 +1,29 @@
+<Project>
+  <Import Project="Globals.props" />
+  <Import Project="MSVCFindCompilerPaths.props" />
+
+  <PropertyGroup Label="MSVC Compiler Settings">
+    <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>
+    <CompilerArgs>$(CompilerArgs) /EHsc /sdl</CompilerArgs>
+    <PreprocessorDefines>$(PreprocessorDefines) /D WINDOWS /D UNICODE</PreprocessorDefines>
+    <LibPaths>$(LibPaths) @(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</LibPaths>
+  </PropertyGroup>
+
+  <!-- Specify output type and runtime library for the build configuration -->
+  <PropertyGroup Label="Preprocessor Switches">
+    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Exe'">$(PreprocessorDefines) /D _CONSOLE</PreprocessorDefines>
+    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Dll'">$(PreprocessorDefines) /D _USRDLL</PreprocessorDefines>
+    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Lib'">$(PreprocessorDefines) /D _LIB</PreprocessorDefines>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Debug'">
+    <CompilerArgs>$(CompilerArgs) /MDd /Zi /Od /DEBUG:FULL</CompilerArgs>
+    <!-- Note: _DEBUG is defined by default using /MDd -->
+    <!-- <PreprocessorDefines>$(PreprocessorDefines) /D _DEBUG</PreprocessorDefines> -->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Release'">
+    <CompilerArgs>$(CompilerArgs) /MD /GL /O2</CompilerArgs>
+    <PreprocessorDefines>$(PreprocessorDefines) /D NDEBUG</PreprocessorDefines>
+  </PropertyGroup>
+</Project>

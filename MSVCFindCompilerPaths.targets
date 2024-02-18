@@ -1,0 +1,6 @@
+<Project>
+  <!-- Import MSVCFindCompilerPaths target transitively from CompilerPaths -->
+  <ItemGroup>
+    <PackageReference Include="CompilerPaths" Version="[1.0.2, )" />
+  </ItemGroup>
+</Project>

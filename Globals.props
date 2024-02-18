@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup Label="Project Globals">
+    <OutputName>$(MSBuildProjectName)</OutputName>
+    <OutputExtension>.dll</OutputExtension>
+    <OutputExtension Condition="'$(MSVCOutputType)' == 'Exe'">.exe</OutputExtension>
+
+    <OutputPlatform Condition="'$(MSVCPlatform)' == 'x64'">x64</OutputPlatform>
+    <OutputPlatform Condition="'$(MSVCPlatform)' == 'x86'">Win32</OutputPlatform>
+    <NativePlatform>$([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture)</NativePlatform>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Project Directories">
+    <BinDir>$(MSBuildProjectDirectory)\bin\$(Configuration)</BinDir>
+    <ObjDir>$(MSBuildProjectDirectory)\obj\$(Configuration)\$(NativePlatform)</ObjDir>
+
+    <OutputFilePath>$(BinDir)\$(OutputName)$(OutputExtension)</OutputFilePath>
+  </PropertyGroup>
+
+  <ItemGroup Label="Project Files">
+    <!-- Ensure that changes to source files will trigger rebuilds -->
+    <Content Include="*.cpp;*.hpp" Exclude="*.csproj;*.user">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+
+    <!-- Include all C++ files in the build -->
+    <Source Include="@(Content-> WithMetadataValue('Extension', '.cpp'))" />
+    <!-- Include all generated PDB files in the exported build -->
+    <PdbFiles Condition="$(Configuration) == 'Debug'" Include="$(ObjDir)\*.pdb" />
+  </ItemGroup>
+  <PropertyGroup Label="Source Files">
+    <SourceFiles>@(Source-> '&quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;', ' ')</SourceFiles>
+  </PropertyGroup>
+</Project>

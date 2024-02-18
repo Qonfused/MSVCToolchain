@@ -1,0 +1,33 @@
+<Project>
+  <Import Project="MSVCFindCompilerPaths.targets" />
+
+  <!-- Targets to build the native project. The output goes directly to the bin directory -->
+  <Target Name="PrepareForNativeBuild">
+    <!-- Remove artifacts from the bin and obj directories on re-builds -->
+    <ItemGroup>
+      <Clean Condition="Exists('$(BinDir)')"
+             Include="$(BinDir)/$(OutputName).*" />
+      <Clean Condition="Exists('$(ObjDir)')"
+             Include="$(ObjDir)/*.*" />
+    </ItemGroup>
+
+    <!-- Creates the bin and obj directories if they don't exist -->
+    <MakeDir Condition="!Exists('$(BinDir)')"
+             Directories="$(BinDir)" />
+    <MakeDir Condition="!Exists('$(ObjDir)')"
+             Directories="$(ObjDir)" />
+  </Target>
+
+  <Target Name="BuildNativeProjectWindows"
+          AfterTargets="Build"
+          DependsOnTargets="PrepareForNativeBuild;MSVCFindCompilerPaths">
+
+    <Exec Command="&quot;$(MSVCCompilerPath)&quot; $(SourceFiles) $(IncPaths) $(PreprocessorDefines) $(CompilerArgs) /link $(LibPaths) /out:&quot;$(OutputFilePath)&quot;"
+          WorkingDirectory="$(ObjDir)"
+          ConsoleToMsBuild="true" />
+
+    <Copy SourceFiles="$(OutputFilePath);@(PdbFiles-> '%(FullPath)', ' ')"
+          DestinationFolder="$(SolutionDir)dist\$(Configuration)\$(OutputPlatform)"
+          SkipUnchangedFiles="True" />
+  </Target>
+</Project>

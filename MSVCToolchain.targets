@@ -20,7 +20,7 @@
 
   <Target Name="BuildNativeProjectWindows"
           AfterTargets="Build"
-          DependsOnTargets="PrepareForNativeBuild;MSVCFindCompilerPaths">
+          DependsOnTargets="PrepareForNativeBuild;MSVCUpdateCompilerPaths">
 
     <Exec Command="&quot;$(MSVCCompilerPath)&quot; $(SourceFiles) $(IncPaths) $(PreprocessorDefines) $(CompilerArgs) /link $(LibPaths) /out:&quot;$(OutputFilePath)&quot;"
           WorkingDirectory="$(ObjDir)"

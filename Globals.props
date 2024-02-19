@@ -25,8 +25,12 @@
 
     <!-- Include all C++ files in the build -->
     <Source Include="@(Content-> WithMetadataValue('Extension', '.cpp'))" />
+
+    <OutputFiles Include="$(OutputFilePath)" />
     <!-- Include all generated PDB files in the exported build -->
-    <PdbFiles Condition="$(Configuration) == 'Debug'" Include="$(ObjDir)\*.pdb" />
+    <PdbFiles Condition="$(Configuration) == 'Debug'"
+              Include="$(BinDir)\*.pdb" />
+    <OutputFiles Include="@(PdbFiles)" />
   </ItemGroup>
   <PropertyGroup Label="Source Files">
     <SourceFiles>@(Source-> '&quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;', ' ')</SourceFiles>

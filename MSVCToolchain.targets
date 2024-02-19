@@ -26,7 +26,8 @@
           WorkingDirectory="$(ObjDir)"
           ConsoleToMsBuild="true" />
 
-    <Copy SourceFiles="$(OutputFilePath);@(PdbFiles-> '%(FullPath)', ' ')"
+    <!-- Copy output to a root-level dist directory -->
+    <Copy SourceFiles="@(OutputFiles)"
           DestinationFolder="$(SolutionDir)dist\$(Configuration)\$(OutputPlatform)"
           SkipUnchangedFiles="True" />
   </Target>

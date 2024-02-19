@@ -1,5 +1,6 @@
 <Project>
   <Target Name="MSVCFindCompilerPaths"
+          Condition="'$(DesignTimeBuild)' != 'true'"
           DependsOnTargets="ResolveAssemblyReferences">
     <!-- Validate imports for MSVCFindCompilerPaths -->
     <Error Condition="'$(CompilerPathsTFM)' == ''"

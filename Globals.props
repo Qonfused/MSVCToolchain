@@ -27,10 +27,8 @@
     <Source Include="@(Content-> WithMetadataValue('Extension', '.cpp'))" />
 
     <OutputFiles Include="$(OutputFilePath)" />
-    <!-- Include all generated PDB files in the exported build -->
-    <PdbFiles Condition="$(Configuration) == 'Debug'"
-              Include="$(BinDir)\*.pdb" />
-    <OutputFiles Include="@(PdbFiles)" />
+    <OutputFiles Condition="$(Configuration) == 'Debug'"
+                 Include="$(OutputFilePath.Replace('$(OutputExtension)', '.pdb'))" />
   </ItemGroup>
   <PropertyGroup Label="Source Files">
     <SourceFiles>@(Source-> '&quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;', ' ')</SourceFiles>

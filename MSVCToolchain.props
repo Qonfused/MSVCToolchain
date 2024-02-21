@@ -2,13 +2,6 @@
   <Import Project="Globals.props" />
   <Import Project="MSVCCompilerPaths.props" />
 
-  <PropertyGroup Label="MSVC Compiler Settings">
-    <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>
-    <CompilerArgs>$(CompilerArgs) /EHsc /sdl</CompilerArgs>
-    <PreprocessorDefines>$(PreprocessorDefines) /D WINDOWS /D UNICODE</PreprocessorDefines>
-    <LibPaths>$(LibPaths) @(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</LibPaths>
-  </PropertyGroup>
-
   <!-- Specify output type and runtime library for the build configuration -->
   <PropertyGroup Label="Preprocessor Switches">
     <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Exe'">$(PreprocessorDefines) /D _CONSOLE</PreprocessorDefines>

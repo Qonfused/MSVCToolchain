@@ -2,8 +2,7 @@
   <Import Project="MSVCCompilerPaths.targets" />
 
   <Target Name="PrepareForMSVCBuild"
-        DependsOnTargets="MSVCUpdateCompilerPaths">
-    <!-- BeforeTargets="CopyFilesToOutputDirectory" -->
+          DependsOnTargets="MSVCFindCompilerPaths">
     <!-- Remove artifacts from the bin and obj directories on re-builds -->
     <ItemGroup>
       <Clean Condition="Exists('$(BinDir)')"
@@ -21,9 +20,15 @@
 
   <Target Name="BuildMSVCProject"
           AfterTargets="Build"
-          DependsOnTargets="MSVCUpdateCompilerPaths">
-    <!-- Setup the build environment for MSVC -->
-    <CallTarget Targets="PrepareForMSVCBuild" />
+          BeforeTargets="MSVCUpdateCompilerPaths"
+          DependsOnTargets="PrepareForMSVCBuild">
+    <!-- Configure MSVC compiler settings -->
+    <PropertyGroup>
+      <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>
+      <CompilerArgs>$(CompilerArgs) /EHsc /sdl</CompilerArgs>
+      <PreprocessorDefines>$(PreprocessorDefines) /D WINDOWS /D UNICODE</PreprocessorDefines>
+      <LibPaths>$(LibPaths) @(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</LibPaths>
+    </PropertyGroup>
 
     <!-- Build the project using the MSVC compiler -->
     <Exec Command="&quot;$(MSVCCompilerPath)&quot; $(SourceFiles) $(IncPaths) $(PreprocessorDefines) $(CompilerArgs) /link $(LibPaths) /out:&quot;$(OutputFilePath)&quot;"

@@ -6,6 +6,10 @@
     <Error Condition="'$(CompilerPathsTFM)' == ''"
            Text="The FindMSVCCompiler task could not be imported." />
 
+    <!-- Validate inputs to MSVCFindCompilerPaths -->
+    <Error Condition="'$(MSVCPlatform)' != 'x86' And '$(MSVCPlatform)' != 'x64'"
+           Text="MSVCPlatform must be set to 'x86' or 'x64'." />
+
     <FindMSVCCompiler
         Platform="$(MSVCPlatform)"
         VSVersion="$(MSVCVSVersion)"
@@ -19,25 +23,5 @@
       <Output TaskParameter="WinSDKToolPath"
               PropertyName="MSVCWinSDKToolPath" />
     </FindMSVCCompiler>
-  </Target>
-
-  <!-- Manually update MSVC compiler paths for multi-platform builds -->
-  <Target Name="MSVCUpdateCompilerPaths"
-          DependsOnTargets="MSVCFindCompilerPaths">
-    <!-- Validate inputs to MSVCFindCompilerPaths -->
-    <Error Condition="'$(MSVCPlatform)' != 'x86' And '$(MSVCPlatform)' != 'x64'"
-           Text="MSVCPlatform must be set to 'x86' or 'x64'." />
-
-    <CallTarget Targets="MSVCFindCompilerPaths"
-                Condition="$(MSVCWinSDKToolPath.EndsWith('$(MSVCPlatform)')) == false">
-      <Output TaskParameter="CompilerPath"
-              PropertyName="MSVCCompilerPath" />
-      <Output TaskParameter="IncludePaths"
-              ItemName="MSVCIncludePaths" />
-      <Output TaskParameter="LibPaths"
-              ItemName="MSVCLibPaths" />
-      <Output TaskParameter="WinSDKToolPath"
-              PropertyName="MSVCWinSDKToolPath" />
-    </CallTarget>
   </Target>
 </Project>

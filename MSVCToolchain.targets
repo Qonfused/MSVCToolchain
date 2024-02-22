@@ -2,15 +2,8 @@
   <Import Project="MSVCCompilerPaths.targets" />
 
   <Target Name="PrepareForMSVCBuild"
+          BeforeTargets="BuildMSVCProject"
           DependsOnTargets="MSVCFindCompilerPaths">
-    <!-- Remove artifacts from the bin and obj directories on re-builds -->
-    <ItemGroup>
-      <Clean Condition="Exists('$(BinDir)')"
-             Include="$(BinDir)/$(OutputName).*" />
-      <Clean Condition="Exists('$(ObjDir)')"
-             Include="$(ObjDir)/*.*" />
-    </ItemGroup>
-
     <!-- Creates the bin and obj directories if they don't exist -->
     <MakeDir Condition="!Exists('$(BinDir)')"
              Directories="$(BinDir)" />
@@ -18,10 +11,17 @@
              Directories="$(ObjDir)" />
   </Target>
 
+  <Target Name="CleanMSVCProject"
+          AfterTargets="Clean">
+    <!-- Clean the bin and obj directories -->
+    <Clean Condition="Exists('$(BinDir)')"
+            Include="$(BinDir)/$(OutputName).*" />
+    <Clean Condition="Exists('$(ObjDir)')"
+            Include="$(ObjDir)/*.*" />
+  </Target>
+
   <Target Name="BuildMSVCProject"
-          AfterTargets="Build"
-          BeforeTargets="MSVCUpdateCompilerPaths"
-          DependsOnTargets="PrepareForMSVCBuild">
+          AfterTargets="Build">
     <!-- Configure MSVC compiler settings -->
     <PropertyGroup>
       <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>

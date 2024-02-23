@@ -21,7 +21,7 @@
   </Target>
 
   <Target Name="BuildMSVCProject"
-          AfterTargets="Build">
+          BeforeTargets="CoreCompile">
     <!-- Configure MSVC compiler settings -->
     <PropertyGroup>
       <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>

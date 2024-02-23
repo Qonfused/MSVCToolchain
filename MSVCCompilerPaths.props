@@ -1,7 +1,9 @@
 <Project>
   <!-- Import MSVCVSVersion and MSVCWinSDKVersion props from CompilerPaths -->
   <ItemGroup>
-    <PackageReference Include="CompilerPaths" Version="[1.0.2, )" />
+    <PackageReference Include="CompilerPaths"
+                      Version="[1.0.2, )"
+                      PrivateAssets="All" />
   </ItemGroup>
 
   <!-- Set MSVC platform to x64 by default, or x86 if the runtime identifier contains 'x86'. -->

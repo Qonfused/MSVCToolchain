@@ -8,6 +8,7 @@
   <Target Name="MSVCFindCompilerPaths"
           Condition="'$(DesignTimeBuild)' != 'true'"
           DependsOnTargets="ResolveAssemblyReferences">
+
     <!-- Validate imports for MSVCFindCompilerPaths -->
     <Error Condition="'$(CompilerPathsTFM)' == ''"
            Text="The FindMSVCCompiler task could not be imported." />

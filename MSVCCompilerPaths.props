@@ -5,7 +5,12 @@
                       Version="[1.0.2, )"
                       PrivateAssets="All"
                       GeneratePathProperty="true" />
+    <CompilerPathsDirs Include="$(NuGetPackageRoot)\compilerpaths\*" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(PkgCompilerPaths)' == ''">
+    <PkgCompilerPaths>$(CompilerPathsDirs.Identity)</PkgCompilerPaths>
+  </PropertyGroup>
 
   <!-- Locate the path to the BuildTasks assembly from CompilerPaths -->
   <PropertyGroup Condition="'$(CompilerPathsTFM)' == ''">

@@ -26,7 +26,7 @@
     <PropertyGroup>
       <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>
       <CompilerArgs>$(CompilerArgs) /EHsc /sdl</CompilerArgs>
-      <PreprocessorDefines>$(PreprocessorDefines) /D WINDOWS /D UNICODE</PreprocessorDefines>
+      <PreprocessorDefines>$(PreprocessorDefines) /D_WINDOWS /D UNICODE</PreprocessorDefines>
       <LibPaths>$(LibPaths) @(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</LibPaths>
     </PropertyGroup>
 

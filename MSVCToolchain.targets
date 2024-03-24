@@ -24,14 +24,19 @@
           BeforeTargets="CoreCompile">
     <!-- Configure MSVC compiler settings -->
     <PropertyGroup>
-      <IncPaths>$(IncPaths) @(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</IncPaths>
-      <CompilerArgs>$(CompilerArgs) /EHsc /sdl</CompilerArgs>
-      <PreprocessorDefines>$(PreprocessorDefines) /D_WINDOWS /D UNICODE</PreprocessorDefines>
-      <LibPaths>$(LibPaths) @(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</LibPaths>
+      <!-- Merge 'IncPaths' and 'MSVCIncludePaths' into a single property -->
+      <_IncludePaths>@(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_IncludePaths>
+      <_IncludePaths>$(_IncludePaths) @(IncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_IncludePaths>
+
+      <_CompilerArgs>@(CompilerArgs, ' ') /EHsc /sdl</_CompilerArgs>
+      <_PreprocessorDefines>@(PreprocessorDefines, ' ') /D_WINDOWS /D UNICODE</_PreprocessorDefines>
+
+      <_LibPaths>@(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_LibPaths>
+      <_LibPaths>$(_LibPaths) @(LibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_LibPaths>
     </PropertyGroup>
 
     <!-- Build the project using the MSVC compiler -->
-    <Exec Command="&quot;$(MSVCCompilerPath)&quot; $(SourceFiles) $(IncPaths) $(PreprocessorDefines) $(CompilerArgs) /link $(LibPaths) /out:&quot;$(OutputFilePath)&quot;"
+    <Exec Command="&quot;$(MSVCCompilerPath)&quot; $(SourceFiles) $(_IncludePaths) $(_PreprocessorDefines) $(_CompilerArgs) /link $(_LibPaths) /out:&quot;$(OutputFilePath)&quot;"
           WorkingDirectory="$(ObjDir)"
           ConsoleToMsBuild="true" />
 

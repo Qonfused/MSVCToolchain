@@ -3,20 +3,23 @@
   <Import Project="MSVCCompilerPaths.props" />
 
   <!-- Specify output type and runtime library for the build configuration -->
-  <PropertyGroup Label="Preprocessor Switches">
-    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Exe'">$(PreprocessorDefines) /D_CONSOLE</PreprocessorDefines>
-    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Dll'">$(PreprocessorDefines) /D_USRDLL</PreprocessorDefines>
-    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Lib'">$(PreprocessorDefines) /D_LIB</PreprocessorDefines>
-  </PropertyGroup>
+  <ItemGroup Label="Preprocessor Switches">
+    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Exe'"
+                         Include="/D_CONSOLE" />
+    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Dll'"
+                         Include="/D_USRDLL" />
+    <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Lib'"
+                         Include="/D_LIB" />
+  </ItemGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Debug'">
-    <CompilerArgs>$(CompilerArgs) /MDd /Zi /Od /DEBUG:FULL</CompilerArgs>
+  <ItemGroup Condition="$(Configuration) == 'Debug'">
+    <CompilerArgs Include="/MDd /Zi /Od /DEBUG:FULL" />
     <!-- Note: _DEBUG is defined by default using /MDd -->
-    <!-- <PreprocessorDefines>$(PreprocessorDefines) /D _DEBUG</PreprocessorDefines> -->
-  </PropertyGroup>
+    <!-- <PreprocessorDefines Include="/D _DEBUG" /> -->
+  </ItemGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Release'">
-    <CompilerArgs>$(CompilerArgs) /MD /GL /O2</CompilerArgs>
-    <PreprocessorDefines>$(PreprocessorDefines) /D NDEBUG</PreprocessorDefines>
-  </PropertyGroup>
+  <ItemGroup Condition="$(Configuration) == 'Release'">
+    <CompilerArgs Include="/MD /GL /O2" />
+    <PreprocessorDefines Include="/D NDEBUG" />
+  </ItemGroup>
 </Project>

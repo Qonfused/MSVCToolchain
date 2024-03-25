@@ -8,18 +8,21 @@ Below is a simple example of how to build a simple C++ executable using the MSVC
 ```xml
 <!-- ProjectA.csproj -->
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
 
-    <!-- Properties for MSVCFindCompilerPaths -->
+  <!-- Properties for MSVCFindCompilerPaths -->
+  <PropertyGroup>
     <MSVCPlatform>x86</MSVCPlatform>
     <MSVCOutputType>Exe</MSVCOutputType>
-
-     <!-- Properties for MSVCToolchain -->
-    <CompilerArgs>/GS /sdl</CompilerArgs>
-    <PreprocessorDefines>/D WIN32</PreprocessorDefines>
   </PropertyGroup>
+
+  <!-- Properties for MSVCToolchain -->
+  <ItemGroup>
+    <CompilerArgs Include="/GS /sdl" />
+    <PreprocessorDefines Include="/D WIN32" />
+  </ItemGroup>
 
   <Import Project="< ... >\MSVCToolchain.props" />
   <Import Project="< ... >\MSVCToolchain.targets" />
@@ -31,17 +34,8 @@ Below is an example of how to build a native C++ project against the .NET SDK us
 ```xml
 <!-- ProjectB.csproj -->
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-
-    <!-- Properties for MSVCFindCompilerPaths -->
-    <MSVCPlatform>x86</MSVCPlatform>
-    <MSVCOutputType>Dll</MSVCOutputType>
-
-     <!-- Properties for MSVCToolchain -->
-    <CompilerArgs>/GS /sdl</CompilerArgs>
-    <PreprocessorDefines>/D WIN32</PreprocessorDefines>
   </PropertyGroup>
 
   <!--
@@ -49,19 +43,30 @@ Below is an example of how to build a native C++ project against the .NET SDK us
     This is needed for building against Windows SDK 10.0.15063.0 and later.
   -->
   <PropertyGroup>
-    <!-- Get the .NET Framework SDK Kits path from registry -->
     <SDK40Version>4.8</SDK40Version>
+    <!-- Get the .NET Framework SDK Kits path from registry -->
     <SDK40KitsPath>$([MSBuild]::GetRegistryValueFromView(
       'HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\NETFXSDK\$(SDK40Version)',
       'KitsInstallationFolder',
       null,
       RegistryView.Registry32
     ))</SDK40KitsPath>
-
-    <!-- Include metahost.h and mscoree.lib from the .NET Framework SDK -->
-    <IncPaths>/I &quot;$(SDK40KitsPath)Include\um&quot;</IncPaths>
-    <LibPaths>/LIBPATH:&quot;$(SDK40KitsPath)Lib\um\$(MSVCPlatform)&quot;</LibPaths>
   </PropertyGroup>
+
+  <!-- Properties for MSVCFindCompilerPaths -->
+  <PropertyGroup>
+    <MSVCPlatform>x86</MSVCPlatform>
+    <MSVCOutputType>Dll</MSVCOutputType>
+  </PropertyGroup>
+
+  <!-- Properties for MSVCToolchain -->
+  <ItemGroup>
+    <CompilerArgs Include="/FS" />
+    <PreprocessorDefines Include="/D WIN32" />
+    <!-- Include metahost.h and mscoree.lib from the .NET Framework SDK -->
+    <IncludePaths Include="$(SDK40KitsPath)Include\um" />
+    <LibPaths Include="$(SDK40KitsPath)Lib\um\$(MSVCPlatform)" />
+  </ItemGroup>
 
   <Import Project="< ... >\MSVCToolchain.props" />
   <Import Project="< ... >\MSVCToolchain.targets" />

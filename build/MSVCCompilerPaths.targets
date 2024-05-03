@@ -1,16 +1,18 @@
-<Project>
-  <!-- Import the FindMSVCCompiler task from the CompilerPaths package. -->
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Import the FindMSVCCompiler task to locate the MSVC compiler paths -->
   <UsingTask
     TaskName="BuildTasks.FindMSVCCompiler"
-    Condition="Exists('$(BuildTasksPath)')"
-    AssemblyFile="$(BuildTasksPath)" />
+    AssemblyFile="$(BuildTasksPath)"
+    Condition="Exists('$(BuildTasksPath)')" />
 
   <Target Name="MSVCFindCompilerPaths"
           Condition="'$(DesignTimeBuild)' != 'true'"
           DependsOnTargets="ResolveAssemblyReferences">
 
     <!-- Validate imports for MSVCFindCompilerPaths -->
-    <Error Condition="'$(CompilerPathsTFM)' == ''"
+    <Error Condition="!Exists('$(BuildTasksPath)')"
            Text="The FindMSVCCompiler task could not be imported." />
 
     <!-- Validate inputs to MSVCFindCompilerPaths -->
@@ -31,4 +33,5 @@
               PropertyName="MSVCWinSDKToolPath" />
     </FindMSVCCompiler>
   </Target>
+
 </Project>

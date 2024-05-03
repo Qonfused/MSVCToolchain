@@ -1,36 +1,36 @@
-<Project>
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="MSVCCompilerPaths.targets" />
 
-  <Target Name="PrepareForMSVCBuild"
-          BeforeTargets="BuildMSVCProject"
-          DependsOnTargets="MSVCFindCompilerPaths">
-    <!-- Creates the bin and obj directories if they don't exist -->
-    <MakeDir Condition="!Exists('$(BinDir)')"
-             Directories="$(BinDir)" />
-    <MakeDir Condition="!Exists('$(ObjDir)')"
-             Directories="$(ObjDir)" />
-  </Target>
-
+  <!-- Clean the bin and obj directories -->
   <Target Name="CleanMSVCProject"
           AfterTargets="Clean">
-    <!-- Clean the bin and obj directories -->
     <Clean Condition="Exists('$(BinDir)')"
             Include="$(BinDir)/$(OutputName).*" />
     <Clean Condition="Exists('$(ObjDir)')"
             Include="$(ObjDir)/*.*" />
   </Target>
 
+  <!-- Creates the bin and obj directories if they don't exist -->
+  <Target Name="PrepareForMSVCBuild"
+          BeforeTargets="BuildMSVCProject"
+          DependsOnTargets="MSVCFindCompilerPaths">
+    <MakeDir Directories="$(BinDir)"
+             Condition="!Exists('$(BinDir)')" />
+    <MakeDir Directories="$(ObjDir)"
+             Condition="!Exists('$(ObjDir)')" />
+  </Target>
+
+  <!-- Configure MSVC compiler settings -->
   <Target Name="BuildMSVCProject"
           BeforeTargets="CoreCompile">
-    <!-- Configure MSVC compiler settings -->
     <PropertyGroup>
+      <_CompilerArgs>@(CompilerArgs, ' ') /EHsc /sdl</_CompilerArgs>
+      <_PreprocessorDefines>@(PreprocessorDefines, ' ') /D_WINDOWS /D UNICODE</_PreprocessorDefines>
       <!-- Merge 'IncPaths' and 'MSVCIncludePaths' into a single property -->
       <_IncludePaths>@(MSVCIncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_IncludePaths>
       <_IncludePaths>$(_IncludePaths) @(IncludePaths-> '/I &quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_IncludePaths>
-
-      <_CompilerArgs>@(CompilerArgs, ' ') /EHsc /sdl</_CompilerArgs>
-      <_PreprocessorDefines>@(PreprocessorDefines, ' ') /D_WINDOWS /D UNICODE</_PreprocessorDefines>
-
+      <!-- Merge '_LibPaths' and 'MSVCLibPaths' into a single property -->
       <_LibPaths>@(MSVCLibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_LibPaths>
       <_LibPaths>$(_LibPaths) @(LibPaths-> '/LIBPATH:&quot;%(RootDir)%(Directory)%(Filename)&quot;', ' ')</_LibPaths>
     </PropertyGroup>
@@ -45,4 +45,5 @@
           DestinationFolder="$(SolutionDir)dist\$(Configuration)\$(OutputPlatform)"
           SkipUnchangedFiles="True" />
   </Target>
+
 </Project>

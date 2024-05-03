@@ -1,32 +1,30 @@
-<Project>
-  <PropertyGroup Label="Project Globals">
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Project configuration properties -->
+  <PropertyGroup Condition="'$(OutputName)' == ''">
     <OutputName>$(MSBuildProjectName)</OutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OuputExtension)' == ''">
     <OutputExtension>.dll</OutputExtension>
     <OutputExtension Condition="'$(MSVCOutputType)' == 'Exe'">.exe</OutputExtension>
-
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OutputPlatform)' == ''">
     <OutputPlatform Condition="'$(MSVCPlatform)' == 'x64'">x64</OutputPlatform>
     <OutputPlatform Condition="'$(MSVCPlatform)' == 'x86'">Win32</OutputPlatform>
-    <NativePlatform>$([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture)</NativePlatform>
-  </PropertyGroup>
-
-  <PropertyGroup Label="NuGet Directories">
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
   </PropertyGroup>
 
   <PropertyGroup Label="Project Directories">
-    <BinDir>$(MSBuildProjectDirectory)\bin\$(Configuration)</BinDir>
-    <ObjDir>$(MSBuildProjectDirectory)\obj\$(Configuration)\$(NativePlatform)</ObjDir>
-
+    <BinDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(OutputPlatform)</BinDir>
+    <ObjDir>$(MSBuildProjectDirectory)\obj\$(Configuration)\$(OutputPlatform)</ObjDir>
     <OutputFilePath>$(BinDir)\$(OutputName)$(OutputExtension)</OutputFilePath>
   </PropertyGroup>
 
   <ItemGroup Label="Project Files">
     <!-- Ensure that changes to source files will trigger rebuilds -->
-    <Content Include="*.cpp;*.hpp" Exclude="*.csproj;*.user">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </Content>
-
+    <Content Include="*.cpp;*.hpp"
+             Exclude="*.csproj;*.user"
+             CopyFilesToOutputDirectory="False" />
     <!-- Include all C++ files in the build -->
     <Source Include="@(Content-> WithMetadataValue('Extension', '.cpp'))" />
 
@@ -37,4 +35,5 @@
   <PropertyGroup Label="Source Files">
     <SourceFiles>@(Source-> '&quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;', ' ')</SourceFiles>
   </PropertyGroup>
+
 </Project>

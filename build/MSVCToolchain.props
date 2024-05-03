@@ -1,5 +1,6 @@
-<Project>
-  <Import Project="Globals.props" />
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="Project.props" />
   <Import Project="MSVCCompilerPaths.props" />
 
   <!-- Specify output type and runtime library for the build configuration -->
@@ -22,4 +23,5 @@
     <CompilerArgs Include="/MD /GL /O2" />
     <PreprocessorDefines Include="/D NDEBUG" />
   </ItemGroup>
+
 </Project>

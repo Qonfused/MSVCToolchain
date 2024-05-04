@@ -75,6 +75,7 @@ Below is an example of how to build a native C++ project against the .NET SDK us
   <!-- Properties for MSVCToolchain -->
   <ItemGroup>
     <CompilerArgs Include="/FS" />
+    <CompilerArgs Include="/D_WINDOWS" />
     <PreprocessorDefines Include="/D WIN32" />
     <!-- Include metahost.h and mscoree.lib from the .NET Framework SDK -->
     <IncludePaths Include="$(SDK40KitsPath)Include\um" />

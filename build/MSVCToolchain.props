@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="Project.props" />
   <Import Project="MSVCCompilerPaths.props" />
+  <Import Project="Project.props" />
 
   <!-- Specify output type and runtime library for the build configuration -->
   <ItemGroup Label="Preprocessor Switches">
     <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Exe'"
                          Include="/D_CONSOLE" />
     <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Dll'"
-                         Include="/D_USRDLL" />
+                         Include="/D_WINDLL /D_USRDLL" />
     <PreprocessorDefines Condition="'$(MSVCOutputType)' == 'Lib'"
                          Include="/D_LIB" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <CompilerArgs Include="/nologo" />
   </ItemGroup>
 
   <ItemGroup Condition="$(Configuration) == 'Debug'">

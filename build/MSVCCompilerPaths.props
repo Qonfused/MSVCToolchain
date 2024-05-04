@@ -7,11 +7,11 @@
     <MSVCPlatform Condition="$(NETCoreSDKRuntimeIdentifier.Contains('x86'))">x86</MSVCPlatform>
   </PropertyGroup>
 
-  <!-- Locate the path to the BuildTasks assembly from CompilerPaths -->
+  <!-- Locate the path to the MSVCToolchain assembly from CompilerPaths -->
   <PropertyGroup Condition="'$(CompilerPathsTFM)' == ''">
     <CompilerPathsTFM>netstandard2.1</CompilerPathsTFM>
     <CompilerPathsTFM Condition="'$(MSBuildRuntimeType)' == 'Full'">net48</CompilerPathsTFM>
-    <BuildTasksPath>..\lib\$(CompilerPathsTFM)\BuildTasks.dll</BuildTasksPath>
+    <BuildTasksPath>..\lib\$(CompilerPathsTFM)\MSVCToolchain.dll</BuildTasksPath>
   </PropertyGroup>
 
 </Project>

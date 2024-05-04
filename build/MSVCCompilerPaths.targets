@@ -3,17 +3,12 @@
 
   <!-- Import the FindMSVCCompiler task to locate the MSVC compiler paths -->
   <UsingTask
-    TaskName="BuildTasks.FindMSVCCompiler"
-    AssemblyFile="$(BuildTasksPath)"
-    Condition="Exists('$(BuildTasksPath)')" />
+    TaskName="MSVCToolchain.Tasks.FindMSVCCompiler"
+    AssemblyFile="$(BuildTasksPath)" />
 
   <Target Name="MSVCFindCompilerPaths"
           Condition="'$(DesignTimeBuild)' != 'true'"
           DependsOnTargets="ResolveAssemblyReferences">
-
-    <!-- Validate imports for MSVCFindCompilerPaths -->
-    <Error Condition="!Exists('$(BuildTasksPath)')"
-           Text="The FindMSVCCompiler task could not be imported." />
 
     <!-- Validate inputs to MSVCFindCompilerPaths -->
     <Error Condition="'$(MSVCPlatform)' != 'x86' And '$(MSVCPlatform)' != 'x64'"

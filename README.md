@@ -16,7 +16,7 @@ Below is a simple example of how to build a simple C++ executable using the MSVC
 
   <ImportGroup>
     <PackageReference Include="MSVCToolchain"
-                      Version="1.0.0"
+                      Version="1.0.1"
                       PrivateAssets="All" />
   </ImportGroup>
 
@@ -47,7 +47,7 @@ Below is an example of how to build a native C++ project against the .NET SDK us
 
   <ImportGroup>
     <PackageReference Include="MSVCToolchain"
-                      Version="1.0.0"
+                      Version="1.0.1"
                       PrivateAssets="All" />
   </ImportGroup>
 
@@ -75,7 +75,6 @@ Below is an example of how to build a native C++ project against the .NET SDK us
   <!-- Properties for MSVCToolchain -->
   <ItemGroup>
     <CompilerArgs Include="/FS" />
-    <CompilerArgs Include="/D_WINDOWS" />
     <PreprocessorDefines Include="/D WIN32" />
     <!-- Include metahost.h and mscoree.lib from the .NET Framework SDK -->
     <IncludePaths Include="$(SDK40KitsPath)Include\um" />

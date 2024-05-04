@@ -10,6 +10,12 @@
           Condition="'$(DesignTimeBuild)' != 'true'"
           DependsOnTargets="ResolveAssemblyReferences">
 
+  <!-- Set MSVC platform to x64 by default, or x86 if the runtime identifier contains 'x86'. -->
+  <PropertyGroup Condition="'$(MSVCPlatform)' == ''">
+    <MSVCPlatform>x64</MSVCPlatform>
+    <MSVCPlatform Condition="$(NETCoreSDKRuntimeIdentifier.Contains('x86'))">x86</MSVCPlatform>
+  </PropertyGroup>
+
     <!-- Validate inputs to MSVCFindCompilerPaths -->
     <Error Condition="'$(MSVCPlatform)' != 'x86' And '$(MSVCPlatform)' != 'x64'"
            Text="MSVCPlatform must be set to 'x86' or 'x64'." />

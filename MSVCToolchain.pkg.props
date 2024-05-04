@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <PackageId>MSVCToolchain</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Cory Bennett</Authors>
     <Copyright>Copyright (c) $([System.DateTime]::UtcNow.ToString(yyyy)) $(Authors)</Copyright>
     <Description>.NET CLI support for native C++ projects on Windows using MSVC. </Description>

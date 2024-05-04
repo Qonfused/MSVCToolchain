@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- Project configuration properties -->
-  <PropertyGroup Condition="'$(OutputName)' == ''">
-    <OutputName>$(MSBuildProjectName)</OutputName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(OuputExtension)' == ''">
-    <OutputExtension>.dll</OutputExtension>
-    <OutputExtension Condition="'$(MSVCOutputType)' == 'Exe'">.exe</OutputExtension>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(OutputPlatform)' == ''">
-    <OutputPlatform Condition="'$(MSVCPlatform)' == 'x64'">x64</OutputPlatform>
-    <OutputPlatform Condition="'$(MSVCPlatform)' == 'x86'">Win32</OutputPlatform>
-  </PropertyGroup>
-
-  <PropertyGroup Label="Project Directories">
-    <BinDir>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(OutputPlatform)</BinDir>
-    <ObjDir>$(MSBuildProjectDirectory)\obj\$(Configuration)\$(OutputPlatform)</ObjDir>
-    <OutputFilePath>$(BinDir)\$(OutputName)$(OutputExtension)</OutputFilePath>
-  </PropertyGroup>
-
   <ItemGroup Label="Project Files">
     <!-- Ensure that changes to source files will trigger rebuilds -->
     <Content Include="**/*.c;**/*.cc;**/*.cpp;"
@@ -30,13 +11,6 @@
     <Source Include="@(Content-> WithMetadataValue('Extension', '.c'))" />
     <Source Include="@(Content-> WithMetadataValue('Extension', '.cc'))" />
     <Source Include="@(Content-> WithMetadataValue('Extension', '.cpp'))" />
-
-    <OutputFiles Include="$(OutputFilePath)" />
-    <OutputFiles Condition="$(Configuration) == 'Debug'"
-                 Include="$(OutputFilePath.Replace('$(OutputExtension)', '.pdb'))" />
   </ItemGroup>
-  <PropertyGroup Label="Source Files">
-    <SourceFiles>@(Source-> '&quot;%(RootDir)%(Directory)%(Filename)%(Extension)&quot;', ' ')</SourceFiles>
-  </PropertyGroup>
 
 </Project>

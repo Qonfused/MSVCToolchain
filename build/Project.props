@@ -22,10 +22,13 @@
 
   <ItemGroup Label="Project Files">
     <!-- Ensure that changes to source files will trigger rebuilds -->
-    <Content Include="*.cpp;*.hpp"
-             Exclude="*.csproj;*.user"
+    <Content Include="**/*.c;**/*.cc;**/*.cpp;"
+             CopyFilesToOutputDirectory="False" />
+    <Content Include="**/*.h;**/*.hh;**/*.hpp"
              CopyFilesToOutputDirectory="False" />
     <!-- Include all C++ files in the build -->
+    <Source Include="@(Content-> WithMetadataValue('Extension', '.c'))" />
+    <Source Include="@(Content-> WithMetadataValue('Extension', '.cc'))" />
     <Source Include="@(Content-> WithMetadataValue('Extension', '.cpp'))" />
 
     <OutputFiles Include="$(OutputFilePath)" />

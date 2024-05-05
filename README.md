@@ -12,16 +12,7 @@ Below is a simple example of how to build a simple C++ executable using the MSVC
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
-
-  <ImportGroup>
-    <PackageReference Include="MSVCToolchain"
-                      Version="1.0.1"
-                      PrivateAssets="All" />
-  </ImportGroup>
-
-  <!-- Properties for MSVCFindCompilerPaths -->
-  <PropertyGroup>
+    <!-- Properties for MSVCFindCompilerPaths -->
     <MSVCPlatform>x86</MSVCPlatform>
     <MSVCOutputType>Exe</MSVCOutputType>
   </PropertyGroup>
@@ -31,6 +22,12 @@ Below is a simple example of how to build a simple C++ executable using the MSVC
     <CompilerArgs Include="/GS /sdl" />
     <PreprocessorDefines Include="/D WIN32" />
   </ItemGroup>
+
+  <ImportGroup>
+    <PackageReference Include="MSVCToolchain"
+                      Version="1.0.1"
+                      PrivateAssets="All" />
+  </ImportGroup>
 
 </Project>
 ```
@@ -43,13 +40,10 @@ Below is an example of how to build a native C++ project against the .NET SDK us
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <!-- Properties for MSVCFindCompilerPaths -->
+    <MSVCPlatform>x86</MSVCPlatform>
+    <MSVCOutputType>Dll</MSVCOutputType>
   </PropertyGroup>
-
-  <ImportGroup>
-    <PackageReference Include="MSVCToolchain"
-                      Version="1.0.1"
-                      PrivateAssets="All" />
-  </ImportGroup>
 
   <!--
     Reference the Microsoft .NET Framework (NETFX) SDK
@@ -66,12 +60,6 @@ Below is an example of how to build a native C++ project against the .NET SDK us
     ))</SDK40KitsPath>
   </PropertyGroup>
 
-  <!-- Properties for MSVCFindCompilerPaths -->
-  <PropertyGroup>
-    <MSVCPlatform>x86</MSVCPlatform>
-    <MSVCOutputType>Dll</MSVCOutputType>
-  </PropertyGroup>
-
   <!-- Properties for MSVCToolchain -->
   <ItemGroup>
     <CompilerArgs Include="/FS" />
@@ -80,6 +68,12 @@ Below is an example of how to build a native C++ project against the .NET SDK us
     <IncludePaths Include="$(SDK40KitsPath)Include\um" />
     <LibPaths Include="$(SDK40KitsPath)Lib\um\$(MSVCPlatform)" />
   </ItemGroup>
+
+  <ImportGroup>
+    <PackageReference Include="MSVCToolchain"
+                      Version="1.0.1"
+                      PrivateAssets="All" />
+  </ImportGroup>
 
 </Project>
 ```
